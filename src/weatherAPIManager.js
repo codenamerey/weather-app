@@ -1,3 +1,5 @@
+import PubSub from './PubSub';
+
 export default (function() {
     const API_KEY = 'b02fb820d29e1fbeec8ca057428a5ea8';
     
@@ -10,7 +12,7 @@ export default (function() {
         let query = `https://api.openweathermap.org/data/2.5/weather?&appid=${API_KEY}&q=${city}&units=metric`;
         let response = await fetch(query);
         let cityData = convertData(await response.json());
-        return cityData;
+        PubSub.publish("cityQuery", cityData);
     }
 
     return {queryCity}

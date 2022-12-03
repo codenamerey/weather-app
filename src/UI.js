@@ -1,3 +1,4 @@
+import PubSub from './PubSub';
 import weatherAPIManager from './weatherAPIManager';
 
 export default (function() {
@@ -9,18 +10,21 @@ export default (function() {
         body.append(main);
     }
 
-    
-    const weatherInfo = function() {
-        return weatherAPIManager.queryCity('Manila');
+    const displayWeatherToScreen = function(data) {
+        const temperature = document.querySelector('#temperature');
+        temperature.textContent = data.temperature;
     }
 
     const renderMain = function() {
         const main = renderElement('main', null, 'main-screen');
         const heading1 = renderElement('h1', null, 'temperature');
         main.append(heading1);
-        const weather_info = weatherInfo();
-        console.log(weatherInfo.cityName);
+        requestWeatherForCity('Manila');
         return main;
+    }
+
+    const requestWeatherForCity = function(city) {
+        weatherAPIManager.queryCity(city);
     }
 
     const renderElement = function (el, text, id, className) {
@@ -31,6 +35,8 @@ export default (function() {
         if (className) elem.classList.add(className);
         return elem;
       }
+
+      PubSub.subscribe("cityQuery", displayWeatherToScreen);
 
       return {renderScreen}
 })();
