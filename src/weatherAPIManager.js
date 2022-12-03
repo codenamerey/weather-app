@@ -10,6 +10,7 @@ export default (function() {
     }
 
     async function queryCity(city) {
+        console.log(city);
         let query = `https://api.openweathermap.org/data/2.5/weather?&appid=${API_KEY}&q=${city}&units=metric`;
         try{
             let response = await fetch(query);
