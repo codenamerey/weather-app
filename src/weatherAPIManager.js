@@ -5,14 +5,20 @@ export default (function() {
     
     function convertData(cityData) {
         const temperature = cityData.main.temp;
-        return {temperature}
+        const cityName = cityData.name;
+        return {temperature, cityName}
     }
 
     async function queryCity(city) {
         let query = `https://api.openweathermap.org/data/2.5/weather?&appid=${API_KEY}&q=${city}&units=metric`;
-        let response = await fetch(query);
-        let cityData = convertData(await response.json());
-        PubSub.publish("cityQuery", cityData);
+        try{
+            let response = await fetch(query);
+            let cityData = convertData(await response.json());
+            PubSub.publish("cityQuery", cityData);
+        }
+        catch{
+            PubSub.publish("cityQuery", null);
+        }
     }
 
     return {queryCity}

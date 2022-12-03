@@ -8,10 +8,20 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist')
     },
+    devtool: 'inline-source-map',
     watch: true,
+    module: {
+        rules: [
+        {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+        },
+        ],
+    },
     plugins:[
             new HtmlWebpackPlugin({
                 title: "Weather App"
             })
-        ]
+    ],
+
 }
